@@ -29,6 +29,10 @@ const App = (props) => (
 )
 ```
 
+## TODO
+- Allow custom styling
+- ...
+
 ## API
 
 |    Name     |       Type       |       Default       | Required | Description |
