@@ -2,30 +2,26 @@
 // See https://github.com/atlassian/react-beautiful-dnd
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Layout, Breadcrumb, Button } from 'antd'
+import { Layout, Breadcrumb } from 'antd'
 import { DragDropContext } from 'react-beautiful-dnd'
 import styled from 'styled-components'
+import { last as _last, indexOf as _indexOf } from 'lodash'
 import Column from './Column'
 
-const ButtonGroup = Button.Group
-const { Header, Footer, Content } = Layout
+const { Header, Footer, Content, Sider } = Layout
 
 const Root = styled.div`
-  background-color: #c5d0e0;
   box-sizing: border-box;
-  padding: 16px;
-  min-height: 100vh;
-  /* flexbox */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  min-height: 100%;
+  height: 100%;
 `;
 
 const HorizontalScrollContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  background: rgba(0, 0, 0, 0.1);
+  min-height: 100%;
+  height: 100%;
   padding: 8px;
   max-width: 100%;
   overflow: auto;
@@ -36,10 +32,30 @@ const VerticalScrollContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background: rgba(0, 0, 0, 0.1);
-  max-height: 800px;
+  border-right: 1px solid #ccc;
+  max-height: 100%;
   overflow: auto;
 `;
+
+const StyledHeader = styled(Header) `
+  border-bottom: 1px solid #ccc;
+  background-color: #cccdce;
+  text-align: center;
+`
+
+const StyledContent = styled(Content) `
+  background-color: white;
+`
+
+const StyledSider = styled(Sider) `
+  background-color: white;
+  border-left: 1px solid #ccc;
+`
+
+const StyledFooter = styled(Footer) `
+  border-top: 1px solid #ccc;
+  background-color: white;
+`
 
 const collect = (map) => Object
   .values(map)
@@ -101,8 +117,8 @@ export default class Board extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      map: collect(this.props.map),
-      history: [this.props.rootId],
+      map: collect(this.props.initial),
+      nav: [this.props.rootId],
       selectedId: null,
       autoFocusId: null,
     };
@@ -122,59 +138,83 @@ export default class Board extends Component {
     const { map } = this.state
     const { source, destination } = result;
 
-    this.setState(reorderMap({ map, source, destination }));
+    this.setState({ selectedId: null, ...reorderMap({ map, source, destination }) });
+  }
+
+  onClickBreadcrumb = (id) => {
+    const { nav } = this.state
+    const index = _indexOf(nav, id)
+    this.setState({ nav: nav.slice(0, index + 1), selectedId: null })
+  }
+
+  onClickItem = (item) => {
+    const { nav } = this.state
+    const last = _last(nav)
+    const index = _indexOf(nav, item.parent)
+
+    // Click on last
+    if (item.parent === last) {
+      if (item.children.length > 0) {
+        this.setState({ nav: [...nav, item.id] })
+      }
+    } else {
+      // Click before last
+      if (item.children.length > 0) {
+        this.setState({ nav: [...nav.slice(0, index + 1), item.id] })
+      } else {
+        this.setState({ nav: nav.slice(0, index + 1) })
+      }
+    }
+
+    this.setState({ selectedId: item.id })
   }
 
   render() {
-    const { map, history, autoFocusId, selectedId } = this.state;
+    const { map, nav, autoFocusId, selectedId } = this.state;
 
-    const { renderItem } = this.props;
+    const { initial, renderItem, renderPreviewItem } = this.props;
 
-    console.log('selectedId ' + selectedId)
+    const last = _last(nav)
 
     return (
       <div>
         <Layout style={{ minHeight: '100vh' }}>
-          <Header style={{ backgroundColor: '#d4d7db' }}>
-            <ButtonGroup>
-              <Button icon="left" />
-              <Button icon="right" />
-            </ButtonGroup>
-          </Header>
-          <Content>
-            <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
-              <Root>
-                <HorizontalScrollContainer>
-                  {history.map(id => {
-                    const data = map[id]
-                    return (
-                      <VerticalScrollContainer>
-                        {data &&
-                          <Column
-                            listId={id}
-                            listType="card"
-                            data={data}
-                            autoFocusId={autoFocusId}
-                            selectedId={selectedId}
-                            onChangeSelectedId={selectedId => this.setState({ selectedId })}
-                            renderItem={renderItem}
-                          />}
+          <StyledHeader>
+            <h4>{initial[last].title}</h4>
+          </StyledHeader>
+          <Layout>
+            <StyledContent>
+              <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
+                <Root>
+                  <HorizontalScrollContainer>
+                    {nav.map(id => map[id] &&
+                      <VerticalScrollContainer key={`col-${id}`}>
+                        <Column
+                          listId={id}
+                          listType="card"
+                          data={map[id]}
+                          autoFocusId={autoFocusId}
+                          selectedId={selectedId}
+                          onClickItem={this.onClickItem}
+                          renderItem={renderItem}
+                        />
                       </VerticalScrollContainer>
-                    )
-                  })}
-                </HorizontalScrollContainer>
-              </Root>
-            </DragDropContext>
-          </Content>
-          <Footer>
-            <div style={{ display: 'block', height: 1, border: 0, borderTop: '1px solid #ccc', padding: 0 }} />
+                    )}
+                  </HorizontalScrollContainer>
+                </Root>
+              </DragDropContext>
+            </StyledContent>
+            <StyledSider width={300}>
+              {selectedId && renderPreviewItem(initial[selectedId])}
+            </StyledSider>
+          </Layout>
+          <StyledFooter>
             <Breadcrumb separator=">">
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item><a href="">Application Center</a></Breadcrumb.Item>
-              <Breadcrumb.Item><a href="">Application List</a></Breadcrumb.Item>
-              <Breadcrumb.Item>An Application</Breadcrumb.Item>
+              {nav.map(id =>
+                <Breadcrumb.Item> <a onClick={() => this.onClickBreadcrumb(id)}>{initial[id].title}</a></Breadcrumb.Item>
+              )}
             </Breadcrumb>
-          </Footer>
+          </StyledFooter>
         </Layout>
       </div>
     );
@@ -182,7 +222,7 @@ export default class Board extends Component {
 }
 
 Board.propTypes = {
-  map: PropTypes.objectOf(
+  initial: PropTypes.objectOf(
     PropTypes.shape({
       id: PropTypes.any.isRequired,
       title: PropTypes.string.isRequired,
@@ -192,4 +232,5 @@ Board.propTypes = {
   ).isRequired,
   rootId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   renderItem: PropTypes.func.isRequired,
+  renderPreviewItem: PropTypes.func.isRequired,
 }

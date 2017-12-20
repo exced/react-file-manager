@@ -7,9 +7,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd'
 import Item from './Item'
 
 const Wrapper = styled.div`
-  background-color: ${({ isDraggingOver }) => (isDraggingOver ? '#c5d0e0' : '#b5bfce')};
-  display: flex;
-  flex-direction: column;
+  background-color: ${({ isDraggingOver }) => (isDraggingOver ? '#cccdce' : 'white')};
   opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : 'inherit')};
   padding: 8px;
   padding-bottom: 0;
@@ -19,17 +17,14 @@ const Wrapper = styled.div`
 `
 
 const DropZone = styled.div`
-  min-height: 250px;
+  min-height: 100%;
   margin-bottom: 8px;
 `
 
 const ScrollContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 300px;
-`
-
-const Container = styled.div`
+  max-height: 100%;
 `
 
 export default class Column extends Component {
@@ -39,35 +34,33 @@ export default class Column extends Component {
       listType,
       data,
       selectedId,
-      onChangeSelectedId,
+      onClickItem,
       renderItem,
      } = this.props;
 
     return (
-      <Container>
-        <DropZone innerRef={dropProvided.innerRef}>
-          {data.map(item => (
-            <Draggable key={item.id} draggableId={item.id} type={listType}>
-              {(dragProvided, dragSnapshot) => (
-                <div>
-                  <Item
-                    key={item.id}
-                    item={item}
-                    isDragging={dragSnapshot.isDragging}
-                    provided={dragProvided}
-                    autoFocus={this.props.autoFocusId === item.id}
-                    selected={selectedId === item.id}
-                    onClick={() => onChangeSelectedId(item.id)}
-                    renderItem={renderItem}
-                  />
-                  {dragProvided.placeholder}
-                </div>
-              )}
-            </Draggable>
-          ))}
-          {dropProvided.placeholder}
-        </DropZone>
-      </Container>
+      <DropZone innerRef={dropProvided.innerRef}>
+        {data.map(item => (
+          <Draggable key={item.id} draggableId={item.id} type={listType}>
+            {(dragProvided, dragSnapshot) => (
+              <div>
+                <Item
+                  key={item.id}
+                  item={item}
+                  isDragging={dragSnapshot.isDragging}
+                  provided={dragProvided}
+                  autoFocus={this.props.autoFocusId === item.id}
+                  selected={selectedId && selectedId === item.id}
+                  onClick={() => onClickItem(item)}
+                  renderItem={renderItem}
+                />
+                {dragProvided.placeholder}
+              </div>
+            )}
+          </Draggable>
+        ))}
+        {dropProvided.placeholder}
+      </DropZone>
     );
   }
 
@@ -109,7 +102,7 @@ export default class Column extends Component {
 }
 
 Column.propTypes = {
-  selectedId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  onChangeSelectedId: PropTypes.func.isRequired,
+  selectedId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onClickItem: PropTypes.func.isRequired,
   renderItem: PropTypes.func.isRequired,
 }
