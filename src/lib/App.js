@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { last as _last, indexOf as _indexOf } from 'lodash';
 import Column from './Column';
 
-const { Header, Footer, Content, Sider } = Layout;
+const { Footer, Content, Sider } = Layout;
 
 const Root = styled.div`
   box-sizing: border-box;
@@ -181,8 +181,6 @@ export default class App extends Component {
 
     const { renderItem, renderPreviewItem, renderPreviewColumn } = this.props;
 
-    const last = _last(nav)
-
     return (
       <div>
         <Layout style={{ minHeight: '100vh' }}>
@@ -239,9 +237,4 @@ App.propTypes = {
   onChange: PropTypes.func.isRequired,
   renderItem: PropTypes.func.isRequired,
   renderPreviewItem: PropTypes.func.isRequired,
-  rightClickMenu: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    data: PropTypes.array.isRequired,
-    onClick: PropTypes.func.isRequired,
-  })).isRequired,
 }

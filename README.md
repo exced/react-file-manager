@@ -20,23 +20,16 @@ yarn lib
 
 ## Usage
 
-```javascript
-import React from 'react'
-import FileManager from 'react-file-manager'
-
-const App = (props) => (
- <FileManager />
-)
-```
-
-## TODO
-- Allow custom styling
-- ...
+See [Example App](https://github.com/exced/react-file-manager/blob/master/src/App.js)
 
 ## API
 
 |    Name     |       Type       |       Default       | Required | Description |
 | :----------:| :-------------:  | :-----------------: | :----------:| :------------:|
-|  | | | | |
+| initial | Object. See [Example](https://github.com/exced/react-file-manager/blob/master/src/App.js) | None | true | normalized data map |
+| rootId | Number | None | true | Id of root folder |
+| onChange | Object => void | None | true | Triggered when file structure changes |
+| renderItem | Object => React.Element | None  | true | Selected item rendering |
+| renderPreviewItem | Object => React.Element | None  | true | Selected item preview rendering |
 
 All contributions are welcome.
