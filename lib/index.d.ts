@@ -5,6 +5,7 @@ import * as React from "react";
 
 declare module "react-file-manager" {
 
+    // TODO
     export interface FileManagerProps extends React.Props {
 
     }

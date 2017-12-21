@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import FileManager from './lib'
+import FileManager from '../../lib'
 import { Icon, Button, Form, Input, Modal } from 'antd'
 
 const ButtonGroup = Button.Group
