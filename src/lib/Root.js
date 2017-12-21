@@ -37,12 +37,6 @@ const VerticalScrollContainer = styled.div`
   overflow: auto;
 `;
 
-const StyledHeader = styled(Header) `
-  border-bottom: 1px solid #ccc;
-  background-color: #cccdce;
-  text-align: center;
-`;
-
 const StyledContent = styled(Content) `
   background-color: white;
 `;
@@ -123,7 +117,7 @@ const reorderMap = ({ map, source, destination }) => {
   };
 };
 
-export default class Board extends Component {
+export default class Root extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -192,16 +186,13 @@ export default class Board extends Component {
     return (
       <div>
         <Layout style={{ minHeight: '100vh' }}>
-          <StyledHeader>
-            <h4>{map[last].title}</h4>
-          </StyledHeader>
           <Layout>
             <StyledContent>
               <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
                 <Root>
                   <HorizontalScrollContainer>
                     {nav.map(id => map[id].children &&
-                      <VerticalScrollContainer key={`col-${id}`}>
+                      <VerticalScrollContainer key={`column-${id}`}>
                         <Column
                           listId={id}
                           listType="card"
@@ -225,7 +216,7 @@ export default class Board extends Component {
           <StyledFooter>
             <Breadcrumb separator=">">
               {nav.map(id =>
-                <Breadcrumb.Item> <a onClick={() => this.onClickBreadcrumb(id)}>{map[id].title}</a></Breadcrumb.Item>
+                <Breadcrumb.Item key={`breadcrumb-${id}`}> <a onClick={() => this.onClickBreadcrumb(id)}>{map[id].title}</a></Breadcrumb.Item>
               )}
             </Breadcrumb>
           </StyledFooter>
@@ -235,7 +226,7 @@ export default class Board extends Component {
   }
 }
 
-Board.propTypes = {
+Root.propTypes = {
   initial: PropTypes.objectOf(
     PropTypes.shape({
       id: PropTypes.any.isRequired,
