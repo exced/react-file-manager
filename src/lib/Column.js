@@ -1,10 +1,10 @@
 // License: https://github.com/atlassian/react-beautiful-dnd
 // See https://github.com/atlassian/react-beautiful-dnd
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { Droppable, Draggable } from 'react-beautiful-dnd'
-import Item from './Item'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Item from './Item';
 
 const Wrapper = styled.div`
   background-color: ${({ isDraggingOver }) => (isDraggingOver ? '#cccdce' : 'white')};
@@ -14,18 +14,18 @@ const Wrapper = styled.div`
   transition: background-color 0.1s ease, opacity 0.1s ease;
   user-select: none;
   width: 250px;
-`
+`;
 
 const DropZone = styled.div`
   min-height: 100%;
   margin-bottom: 8px;
-`
+`;
 
 const ScrollContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 100%;
-`
+`;
 
 export default class Column extends Component {
 

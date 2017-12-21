@@ -1,14 +1,14 @@
 // License: https://github.com/atlassian/react-beautiful-dnd
 // See https://github.com/atlassian/react-beautiful-dnd
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Layout, Breadcrumb } from 'antd'
-import { DragDropContext } from 'react-beautiful-dnd'
-import styled from 'styled-components'
-import { last as _last, indexOf as _indexOf } from 'lodash'
-import Column from './Column'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Layout, Breadcrumb } from 'antd';
+import { DragDropContext } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+import { last as _last, indexOf as _indexOf } from 'lodash';
+import Column from './Column';
 
-const { Header, Footer, Content, Sider } = Layout
+const { Header, Footer, Content, Sider } = Layout;
 
 const Root = styled.div`
   box-sizing: border-box;
@@ -41,21 +41,21 @@ const StyledHeader = styled(Header) `
   border-bottom: 1px solid #ccc;
   background-color: #cccdce;
   text-align: center;
-`
+`;
 
 const StyledContent = styled(Content) `
   background-color: white;
-`
+`;
 
 const StyledSider = styled(Sider) `
   background-color: white;
   border-left: 1px solid #ccc;
-`
+`;
 
 const StyledFooter = styled(Footer) `
   border-top: 1px solid #ccc;
   background-color: white;
-`
+`;
 
 const assemble = (map, ids) => ids.map(id => map[id])
 
@@ -129,7 +129,8 @@ export default class Board extends Component {
     this.state = {
       map: this.props.initial,
       nav: [this.props.rootId],
-      selectedId: null,
+      itemSelectedId: null,
+      columnSelectedId: null,
       autoFocusId: null,
     };
   }
@@ -149,14 +150,14 @@ export default class Board extends Component {
 
     const { map, autoFocusId } = reorderMap({ map: this.state.map, source, destination })
 
-    this.setState({ selectedId: null, map, autoFocusId });
+    this.setState({ columnSelectedId: null, itemSelectedId: null, map, autoFocusId });
     this.props.onChange(map) // Propagates changes
   }
 
   onClickBreadcrumb = (id) => {
     const { nav } = this.state
     const index = _indexOf(nav, id)
-    this.setState({ nav: nav.slice(0, index + 1), selectedId: null })
+    this.setState({ nav: nav.slice(0, index + 1), itemSelectedId: null, columnSelectedId: id })
   }
 
   onClickItem = (item) => {
@@ -178,13 +179,13 @@ export default class Board extends Component {
       }
     }
 
-    this.setState({ selectedId: item.id })
+    this.setState({ itemSelectedId: item.id, columnSelectedId: null })
   }
 
   render() {
-    const { map, nav, autoFocusId, selectedId } = this.state;
+    const { map, nav, autoFocusId, itemSelectedId, columnSelectedId } = this.state;
 
-    const { renderItem, renderPreviewItem } = this.props;
+    const { renderItem, renderPreviewItem, renderPreviewColumn } = this.props;
 
     const last = _last(nav)
 
@@ -206,7 +207,7 @@ export default class Board extends Component {
                           listType="card"
                           data={assemble(map, map[id].children)}
                           autoFocusId={autoFocusId}
-                          selectedId={selectedId}
+                          selectedId={itemSelectedId}
                           onClickItem={this.onClickItem}
                           renderItem={renderItem}
                         />
@@ -217,7 +218,8 @@ export default class Board extends Component {
               </DragDropContext>
             </StyledContent>
             <StyledSider width={300}>
-              {selectedId && renderPreviewItem(map[selectedId])}
+              {(itemSelectedId && renderPreviewItem(map[itemSelectedId])) ||
+                (columnSelectedId && renderPreviewColumn(map[columnSelectedId]))}
             </StyledSider>
           </Layout>
           <StyledFooter>
@@ -246,4 +248,9 @@ Board.propTypes = {
   onChange: PropTypes.func.isRequired,
   renderItem: PropTypes.func.isRequired,
   renderPreviewItem: PropTypes.func.isRequired,
+  rightClickMenu: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
+    onClick: PropTypes.func.isRequired,
+  })).isRequired,
 }
