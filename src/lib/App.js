@@ -81,7 +81,7 @@ export default class App extends Component {
     if (source.droppableId === destination.droppableId) {
 
       // Propagates to handle specific cases
-      this.props.onChangeColumn(target, source, destination)
+      this.props.onChangeRow(target, source, destination)
 
       const reordered = reorder(
         current,
