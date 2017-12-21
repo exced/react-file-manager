@@ -60,63 +60,6 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const reorderMap = ({ map, source, destination }) => {
-  const current = map[source.droppableId].children;
-  const next = map[destination.droppableId].children;
-  const target = current[source.index];
-
-  // moving to same list
-  if (source.droppableId === destination.droppableId) {
-    const reordered = reorder(
-      current,
-      source.index,
-      destination.index,
-    );
-
-    const result = {
-      ...map,
-      [source.droppableId]: {
-        ...map[source.droppableId],
-        children: reordered
-      },
-    };
-
-    return {
-      map: result,
-      // not auto focusing in own list
-      autoFocusId: null,
-    };
-  }
-
-  // moving to different list
-
-  // remove from original
-  current.splice(source.index, 1);
-  // insert into next
-  next.splice(destination.index, 0, target);
-
-  const result = {
-    ...map,
-    [target]: {
-      ...map[target],
-      parent: destination.droppableId,
-    },
-    [source.droppableId]: {
-      ...map[source.droppableId],
-      children: current,
-    },
-    [destination.droppableId]: {
-      ...map[destination.droppableId],
-      children: next,
-    },
-  };
-
-  return {
-    map: result,
-    autoFocusId: target.id,
-  };
-};
-
 export default class App extends Component {
   constructor(props) {
     super(props)
@@ -128,6 +71,69 @@ export default class App extends Component {
       autoFocusId: null,
     };
   }
+
+  reorderMap = ({ map, source, destination }) => {
+    const current = map[source.droppableId].children;
+    const next = map[destination.droppableId].children;
+    const target = current[source.index];
+
+    // moving to same list
+    if (source.droppableId === destination.droppableId) {
+
+      // Propagates to handle specific cases
+      this.props.onChangeColumn(target, source, destination)
+
+      const reordered = reorder(
+        current,
+        source.index,
+        destination.index,
+      );
+
+      const result = {
+        ...map,
+        [source.droppableId]: {
+          ...map[source.droppableId],
+          children: reordered
+        },
+      };
+
+      return {
+        map: result,
+        // not auto focusing in own list
+        autoFocusId: null,
+      };
+    }
+
+    // moving to different list
+    // Propagates to handle specific cases
+    this.props.onChangeColumn(target, source, destination)
+
+    // remove from original
+    current.splice(source.index, 1);
+    // insert into next
+    next.splice(destination.index, 0, target);
+
+    const result = {
+      ...map,
+      [target]: {
+        ...map[target],
+        parent: destination.droppableId,
+      },
+      [source.droppableId]: {
+        ...map[source.droppableId],
+        children: current,
+      },
+      [destination.droppableId]: {
+        ...map[destination.droppableId],
+        children: next,
+      },
+    };
+
+    return {
+      map: result,
+      autoFocusId: target.id,
+    };
+  };
 
   onDragStart = (initial) => {
     console.log('onDragStart');
@@ -142,7 +148,7 @@ export default class App extends Component {
 
     const { source, destination } = result;
 
-    const { map, autoFocusId } = reorderMap({ map: this.state.map, source, destination })
+    const { map, autoFocusId } = this.reorderMap({ map: this.state.map, source, destination })
 
     this.setState({ columnSelectedId: null, itemSelectedId: null, map, autoFocusId });
     this.props.onChange(map) // Propagates changes
@@ -235,6 +241,13 @@ App.propTypes = {
   ).isRequired,
   rootId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
+  onChangeRow: PropTypes.func,
+  onChangeColumn: PropTypes.func,
   renderItem: PropTypes.func.isRequired,
   renderPreviewItem: PropTypes.func.isRequired,
+}
+
+App.defaultProps = {
+  onChangeRow: (a, b, c) => { },
+  onChangeColumn: (a, b, c) => { },
 }

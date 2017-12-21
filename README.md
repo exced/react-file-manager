@@ -29,6 +29,8 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 | initial | Object. See [Example](https://github.com/exced/react-file-manager/blob/master/src/App.js) | None | true | normalized data map |
 | rootId | Number | None | true | Id of root folder |
 | onChange | Object => void | None | true | Triggered when file structure changes |
+| onChangeRow | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of row |
+| onChangeColumn | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of column |
 | renderItem | Object => React.Element | None  | true | Selected item rendering |
 | renderPreviewItem | Object => React.Element | None  | true | Selected item preview rendering |
 

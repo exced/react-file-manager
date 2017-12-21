@@ -48,7 +48,7 @@ const modals = {
   editFolder: "Modifier dossier",
   editFile: "Modifier fichier",
   addFolder: "Nouveau dossier",
-  addFile: "Nouvea fichier",
+  addFile: "Nouveau fichier",
 }
 
 const ModalForm = Form.create()(
@@ -195,6 +195,8 @@ export default class App extends Component {
           initial={map}
           rootId={"0"}
           onChange={map => this.setState({ map })}
+          onChangeRow={(target, source, destination) => console.log('onChangeRow')}
+          onChangeColumn={(target, source, destination) => console.log('onChangeColumn')}
           renderItem={this.renderItem}
           renderPreviewItem={this.renderPreviewItem}
           renderPreviewColumn={this.renderPreviewColumn}
