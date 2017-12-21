@@ -117,7 +117,7 @@ const reorderMap = ({ map, source, destination }) => {
   };
 };
 
-export default class Root extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -226,7 +226,7 @@ export default class Root extends Component {
   }
 }
 
-Root.propTypes = {
+App.propTypes = {
   initial: PropTypes.objectOf(
     PropTypes.shape({
       id: PropTypes.any.isRequired,
