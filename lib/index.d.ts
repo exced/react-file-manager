@@ -1,22 +1,16 @@
-// React Survey Editor
-// https://github.com/exced/react-survey-editor
+// React File Manager
+// https://github.com/exced/react-file-manager
 
 import * as React from "react";
 
-declare module "react-survey-editor" {
+declare module "react-file-manager" {
 
-    export interface SurveyEditorProps extends React.Props {
-        onExport: (value: object) => void;
-        initialValue?: object;
-        locale?: string;
-    }
-
-    export default class SurveyEditor extends React.Component<SurveyEditorProps, {}> {
+    export interface FileManagerProps extends React.Props {
 
     }
 
-    // TODO
-    export class Reducers extends any {
+    export default class FileManager extends React.Component<FileManagerProps, {}> {
 
     }
+
 }
