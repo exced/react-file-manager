@@ -44,6 +44,11 @@ const initial = {
   },
 }
 
+const images = {
+  file: 'https://github.com/exced/react-file-manager/blob/master/public/images/file.png',
+  folder: 'https://github.com/exced/react-file-manager/blob/master/public/images/folder.png',
+}
+
 const modals = {
   editFolder: "Modifier dossier",
   editFile: "Modifier fichier",
@@ -96,7 +101,7 @@ export default class Default extends Component {
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ flex: 1 }}>
         <div style={{ float: 'left' }}>
-          <img src={item.children.length > 0 ? '/images/folder.png' : '/images/file.png'} alt={item.title} style={{ width: 22, height: 22 }} />
+          <img src={item.children.length > 0 ? images.folder : images.file} alt={item.title} style={{ width: 22, height: 22 }} />
         </div>
       </div>
       <div style={{ flex: 5 }}>
@@ -113,7 +118,7 @@ export default class Default extends Component {
 
   renderPreviewItem = (item) => (
     <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
-      <img src={item.children.length > 0 ? '/images/folder.png' : '/images/file.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
+      <img src={item.children.length > 0 ? images.folder : images.file} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
       <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
     </div>
   )
@@ -125,7 +130,7 @@ export default class Default extends Component {
     if (item.children.length > 0) {
       return (
         <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
-          <img src={'/images/folder.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
+          <img src={images.folder} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
           <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
           <p style={{ marginTop: 10 }}>
             <ButtonGroup>
@@ -141,7 +146,7 @@ export default class Default extends Component {
     // file
     return (
       <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
-        <img src={'/images/file.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
+        <img src={images.file} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
         <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
         <p style={{ marginTop: 10 }}>
           <ButtonGroup>
