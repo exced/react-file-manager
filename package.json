@@ -1,6 +1,6 @@
 {
   "name": "react-file-manager",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "private": false,
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
