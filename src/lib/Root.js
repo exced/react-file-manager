@@ -57,12 +57,7 @@ const StyledFooter = styled(Footer) `
   background-color: white;
 `
 
-const collect = (map) => Object
-  .values(map)
-  .reduce((a, e) => ({
-    ...a,
-    [e.id]: e.children.map(id => map[id])
-  }), {})
+const assemble = (map, ids) => ids.map(id => map[id])
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -72,8 +67,8 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const reorderMap = ({ map, source, destination }) => {
-  const current = [...map[source.droppableId]];
-  const next = [...map[destination.droppableId]];
+  const current = map[source.droppableId].children;
+  const next = map[destination.droppableId].children;
   const target = current[source.index];
 
   // moving to same list
@@ -83,10 +78,15 @@ const reorderMap = ({ map, source, destination }) => {
       source.index,
       destination.index,
     );
+
     const result = {
       ...map,
-      [source.droppableId]: reordered,
+      [source.droppableId]: {
+        ...map[source.droppableId],
+        children: reordered
+      },
     };
+
     return {
       map: result,
       // not auto focusing in own list
@@ -103,8 +103,18 @@ const reorderMap = ({ map, source, destination }) => {
 
   const result = {
     ...map,
-    [source.droppableId]: current,
-    [destination.droppableId]: next,
+    [target]: {
+      ...map[target],
+      parent: destination.droppableId,
+    },
+    [source.droppableId]: {
+      ...map[source.droppableId],
+      children: current,
+    },
+    [destination.droppableId]: {
+      ...map[destination.droppableId],
+      children: next,
+    },
   };
 
   return {
@@ -117,7 +127,7 @@ export default class Board extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      map: collect(this.props.initial),
+      map: this.props.initial,
       nav: [this.props.rootId],
       selectedId: null,
       autoFocusId: null,
@@ -130,15 +140,17 @@ export default class Board extends Component {
 
   onDragEnd = (result) => {
     console.log('onDragEnd', result);
-    // dropped nowhere
+    // dropped nowhere  
     if (!result.destination) {
       return;
     }
 
-    const { map } = this.state
     const { source, destination } = result;
 
-    this.setState({ selectedId: null, ...reorderMap({ map, source, destination }) });
+    const { map, autoFocusId } = reorderMap({ map: this.state.map, source, destination })
+
+    this.setState({ selectedId: null, map, autoFocusId });
+    this.props.onChange(map) // Propagates changes
   }
 
   onClickBreadcrumb = (id) => {
@@ -172,7 +184,7 @@ export default class Board extends Component {
   render() {
     const { map, nav, autoFocusId, selectedId } = this.state;
 
-    const { initial, renderItem, renderPreviewItem } = this.props;
+    const { renderItem, renderPreviewItem } = this.props;
 
     const last = _last(nav)
 
@@ -180,19 +192,19 @@ export default class Board extends Component {
       <div>
         <Layout style={{ minHeight: '100vh' }}>
           <StyledHeader>
-            <h4>{initial[last].title}</h4>
+            <h4>{map[last].title}</h4>
           </StyledHeader>
           <Layout>
             <StyledContent>
               <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
                 <Root>
                   <HorizontalScrollContainer>
-                    {nav.map(id => map[id] &&
+                    {nav.map(id => map[id].children &&
                       <VerticalScrollContainer key={`col-${id}`}>
                         <Column
                           listId={id}
                           listType="card"
-                          data={map[id]}
+                          data={assemble(map, map[id].children)}
                           autoFocusId={autoFocusId}
                           selectedId={selectedId}
                           onClickItem={this.onClickItem}
@@ -205,13 +217,13 @@ export default class Board extends Component {
               </DragDropContext>
             </StyledContent>
             <StyledSider width={300}>
-              {selectedId && renderPreviewItem(initial[selectedId])}
+              {selectedId && renderPreviewItem(map[selectedId])}
             </StyledSider>
           </Layout>
           <StyledFooter>
             <Breadcrumb separator=">">
               {nav.map(id =>
-                <Breadcrumb.Item> <a onClick={() => this.onClickBreadcrumb(id)}>{initial[id].title}</a></Breadcrumb.Item>
+                <Breadcrumb.Item> <a onClick={() => this.onClickBreadcrumb(id)}>{map[id].title}</a></Breadcrumb.Item>
               )}
             </Breadcrumb>
           </StyledFooter>
@@ -231,6 +243,7 @@ Board.propTypes = {
     })
   ).isRequired,
   rootId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func.isRequired,
   renderItem: PropTypes.func.isRequired,
   renderPreviewItem: PropTypes.func.isRequired,
 }

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import FileManager from './lib'
 import { Icon } from 'antd'
 
-const map = {
+const initial = {
   "0": {
     id: "0",
     title: "Root",
@@ -61,14 +61,24 @@ const renderItem = (item) => (
 )
 
 const renderPreviewItem = (item) => (
-  <div style={{ textAlign: 'center', margin: 'auto', width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
-    <img src={item.children.length > 0 ? '/images/folder.png' : '/images/file.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block' }} />
+  <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
+    <img src={item.children.length > 0 ? '/images/folder.png' : '/images/file.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
     <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
   </div>
 )
 
-const App = () => (
-  <FileManager initial={map} rootId={"0"} renderItem={renderItem} renderPreviewItem={renderPreviewItem} />
-)
+export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      map: initial
+    }
+  }
 
-export default App
+  render() {
+    const { map } = this.state
+    return (
+      <FileManager initial={map} rootId={"0"} onChange={map => this.setState({ map })} renderItem={renderItem} renderPreviewItem={renderPreviewItem} />
+    )
+  }
+}
