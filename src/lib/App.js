@@ -64,7 +64,6 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      map: this.props.initial,
       nav: [this.props.rootId],
       itemSelectedId: null,
       columnSelectedId: null,
@@ -148,7 +147,7 @@ export default class App extends Component {
 
     const { source, destination } = result;
 
-    const { map, autoFocusId } = this.reorderMap({ map: this.state.map, source, destination })
+    const { map, autoFocusId } = this.reorderMap({ map: this.props.map, source, destination })
 
     this.setState({ columnSelectedId: null, itemSelectedId: null, map, autoFocusId });
     this.props.onChange(map) // Propagates changes
@@ -183,9 +182,9 @@ export default class App extends Component {
   }
 
   render() {
-    const { map, nav, autoFocusId, itemSelectedId, columnSelectedId } = this.state;
+    const { nav, autoFocusId, itemSelectedId, columnSelectedId } = this.state;
 
-    const { renderItem, renderPreviewItem, renderPreviewColumn } = this.props;
+    const { map, renderItem, renderPreviewItem, renderPreviewColumn } = this.props;
 
     return (
       <div>
@@ -231,14 +230,7 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-  initial: PropTypes.objectOf(
-    PropTypes.shape({
-      id: PropTypes.any.isRequired,
-      title: PropTypes.string.isRequired,
-      children: PropTypes.array.isRequired,
-      icon: PropTypes.string,
-    })
-  ).isRequired,
+  map: PropTypes.object.isRequired,
   rootId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
   onChangeRow: PropTypes.func,

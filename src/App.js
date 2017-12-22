@@ -111,15 +111,7 @@ export default class App extends Component {
     </div>
   )
 
-  renderPreviewItem = (item) => (
-    <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
-      <img src={item.children.length > 0 ? '/images/folder.png' : '/images/file.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
-      <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
-    </div>
-  )
-
-  // Triggered when user click on Breadcrumb
-  renderPreviewColumn = (item) => {
+  renderPreview = (item) => {
 
     // folder
     if (item.children.length > 0) {
@@ -192,14 +184,14 @@ export default class App extends Component {
     return (
       <div>
         <FileManager
-          initial={map}
+          map={map}
           rootId={"0"}
           onChange={map => this.setState({ map })}
           onChangeRow={(target, source, destination) => console.log('onChangeRow')}
           onChangeColumn={(target, source, destination) => console.log('onChangeColumn')}
           renderItem={this.renderItem}
-          renderPreviewItem={this.renderPreviewItem}
-          renderPreviewColumn={this.renderPreviewColumn}
+          renderPreviewItem={this.renderPreview}
+          renderPreviewColumn={this.renderPreview}
         />
         {Modals}
       </div>
