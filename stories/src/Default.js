@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import FileManager from '../../lib'
-import { Icon, Button, Form, Input, Modal } from 'antd'
+import { Icon, Button } from 'antd'
 
 const ButtonGroup = Button.Group
-const FormItem = Form.Item
 
 const initial = {
   "0": {
@@ -45,57 +44,17 @@ const initial = {
 }
 
 const images = {
-  file: 'https://github.com/exced/react-file-manager/blob/master/public/images/file.png',
-  folder: 'https://github.com/exced/react-file-manager/blob/master/public/images/folder.png',
+  file: '/images/file.png',
+  folder: '/images/folder.png',
 }
-
-const modals = {
-  editFolder: "Modifier dossier",
-  editFile: "Modifier fichier",
-  addFolder: "Nouveau dossier",
-  addFile: "Nouvea fichier",
-}
-
-const ModalForm = Form.create()(
-  (props) => {
-    const { visible, onCancel, onCreate, form, title } = props;
-    const { getFieldDecorator } = form;
-    return (
-      <Modal
-        visible={visible}
-        title={title}
-        okText="OK"
-        onCancel={onCancel}
-        onOk={onCreate}
-      >
-        <Form layout="vertical">
-          <FormItem label="Titre">
-            {getFieldDecorator('title', {
-              rules: [{ required: true, message: 'Titre requis' }],
-            })(
-              <Input placeholder="Titre" />
-              )}
-          </FormItem>
-        </Form>
-      </Modal>
-    );
-  }
-)
 
 export default class Default extends Component {
   constructor(props) {
     super(props)
     this.state = {
       map: initial,
-      modal: null,
     }
   }
-
-  remove = (item) => {
-    // cascade
-  }
-
-  toggleModal = (modal) => this.setState({ modal })
 
   renderItem = (item) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -116,30 +75,21 @@ export default class Default extends Component {
     </div>
   )
 
-  renderPreviewItem = (item) => (
-    <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
-      <img src={item.children.length > 0 ? images.folder : images.file} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
-      <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
-    </div>
-  )
-
-  // Triggered when user click on Breadcrumb
-  renderPreviewColumn = (item) => {
-
+  renderPreview = (item, index) => {
     // folder
     if (item.children.length > 0) {
       return (
         <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
           <img src={images.folder} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
           <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
-          <p style={{ marginTop: 10 }}>
+          <div style={{ marginTop: 10 }}>
             <ButtonGroup>
-              <Button onClick={() => this.toggleModal(modals.editFolder)} icon="edit" />
-              <Button onClick={() => this.toggleModal(modals.addFolder)} icon="folder-add" />
-              <Button onClick={() => this.toggleModal(modals.addFile)} icon="file-add" />
-              <Button onClick={() => this.remove(item)} type="danger" icon="delete" />
+              <Button onClick={() => { }} icon="edit" />
+              <Button onClick={() => { }} icon="folder-add" />
+              <Button onClick={() => { }} icon="file-add" />
+              <Button onClick={() => { }} type="danger" icon="delete" />
             </ButtonGroup>
-          </p>
+          </div>
         </div>
       )
     }
@@ -148,64 +98,27 @@ export default class Default extends Component {
       <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
         <img src={images.file} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
         <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
-        <p style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 10 }}>
           <ButtonGroup>
-            <Button onClick={() => this.toggleModal(modals.editFile)} icon="edit" />
-            <Button onClick={() => this.remove(item)} type="danger" icon="delete" />
+            <Button onClick={() => { }} icon="edit" />
+            <Button onClick={() => { }} type="danger" icon="delete" />
           </ButtonGroup>
-        </p>
+        </div>
       </div>
     )
   }
 
   render() {
-    const { map, modal } = this.state
-
-    const Modals = (
-      <div>
-        <ModalForm
-          ref={form => this.form = form}
-          title={modals.editFolder}
-          visible={modal && modal === modals.editFolder}
-          onCancel={() => this.toggleModal(null)}
-          onCreate={() => this.toggleModal(null)}
-        />
-        <ModalForm
-          ref={form => this.editFileform = form}
-          title={modals.editFile}
-          visible={modal && modal === modals.editFile}
-          onCancel={() => this.toggleModal(null)}
-          onCreate={() => this.toggleModal(null)}
-        />
-        <ModalForm
-          ref={form => this.addFolderform = form}
-          title={modals.addFolder}
-          visible={modal && modal === modals.addFolder}
-          onCancel={() => this.toggleModal(null)}
-          onCreate={() => this.toggleModal(null)}
-        />
-        <ModalForm
-          ref={form => this.addFileform = form}
-          title={modals.addFile}
-          visible={modal && modal === modals.addFile}
-          onCancel={() => this.toggleModal(null)}
-          onCreate={() => this.toggleModal(null)}
-        />
-      </div>
-    )
+    const { map } = this.state
 
     return (
-      <div>
-        <FileManager
-          initial={map}
-          rootId={"0"}
-          onChange={map => this.setState({ map })}
-          renderItem={this.renderItem}
-          renderPreviewItem={this.renderPreviewItem}
-          renderPreviewColumn={this.renderPreviewColumn}
-        />
-        {Modals}
-      </div>
+      <FileManager
+        map={map}
+        rootId="0"
+        onChange={map => this.setState({ map })}
+        renderItem={this.renderItem}
+        renderPreview={this.renderPreview}
+      />
     )
   }
 }
