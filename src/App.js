@@ -92,7 +92,7 @@ export default class App extends Component {
 
   toggleModal = (modal) => this.setState({ modal })
 
-  renderItem = (item) => (
+  renderItem = (item, index) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ flex: 1 }}>
         <div style={{ float: 'left' }}>
@@ -111,22 +111,21 @@ export default class App extends Component {
     </div>
   )
 
-  renderPreview = (item) => {
-
+  renderPreview = (item, index) => {
     // folder
     if (item.children.length > 0) {
       return (
         <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
           <img src={'/images/folder.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
           <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
-          <p style={{ marginTop: 10 }}>
+          <div style={{ marginTop: 10 }}>
             <ButtonGroup>
               <Button onClick={() => this.toggleModal(modals.editFolder)} icon="edit" />
               <Button onClick={() => this.toggleModal(modals.addFolder)} icon="folder-add" />
               <Button onClick={() => this.toggleModal(modals.addFile)} icon="file-add" />
               <Button onClick={() => this.remove(item)} type="danger" icon="delete" />
             </ButtonGroup>
-          </p>
+          </div>
         </div>
       )
     }
@@ -135,12 +134,12 @@ export default class App extends Component {
       <div style={{ textAlign: 'center', margin: 'auto', marginTop: 170, width: 200, height: 200, border: '1px solid', borderRadius: 6, borderColor: '#ccc' }}>
         <img src={'/images/file.png'} alt={item.title} style={{ width: 70, height: 70, margin: 'auto', display: 'block', marginTop: 40 }} />
         <span style={{ width: 150, textAlign: 'left', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{item.title}</span>
-        <p style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 10 }}>
           <ButtonGroup>
             <Button onClick={() => this.toggleModal(modals.editFile)} icon="edit" />
             <Button onClick={() => this.remove(item)} type="danger" icon="delete" />
           </ButtonGroup>
-        </p>
+        </div>
       </div>
     )
   }
@@ -190,8 +189,7 @@ export default class App extends Component {
           onChangeRow={(target, source, destination) => console.log('onChangeRow')}
           onChangeColumn={(target, source, destination) => console.log('onChangeColumn')}
           renderItem={this.renderItem}
-          renderPreviewItem={this.renderPreview}
-          renderPreviewColumn={this.renderPreview}
+          renderPreview={this.renderPreview}
         />
         {Modals}
       </div>

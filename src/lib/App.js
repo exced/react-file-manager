@@ -66,7 +66,7 @@ export default class App extends Component {
     this.state = {
       nav: [this.props.rootId],
       itemSelectedId: null,
-      columnSelectedId: null,
+      itemSelectedIndex: null,
       autoFocusId: null,
     };
   }
@@ -149,20 +149,20 @@ export default class App extends Component {
 
     const { map, autoFocusId } = this.reorderMap({ map: this.props.map, source, destination })
 
-    this.setState({ columnSelectedId: null, itemSelectedId: null, map, autoFocusId });
+    this.setState({ itemSelectedId: null, map, autoFocusId });
     this.props.onChange(map) // Propagates changes
   }
 
   onClickBreadcrumb = (id) => {
     const { nav } = this.state
     const index = _indexOf(nav, id)
-    this.setState({ nav: nav.slice(0, index + 1), itemSelectedId: null, columnSelectedId: id })
+    this.setState({ nav: nav.slice(0, index + 1), itemSelectedId: id })
   }
 
-  onClickItem = (item) => {
+  onClickItem = (item, itemIndex) => {
     const { nav } = this.state
     const last = _last(nav)
-    const index = _indexOf(nav, item.parent)
+    const navIndex = _indexOf(nav, item.parent)
 
     // Click on last
     if (item.parent === last) {
@@ -172,19 +172,21 @@ export default class App extends Component {
     } else {
       // Click before last
       if (item.children.length > 0) {
-        this.setState({ nav: [...nav.slice(0, index + 1), item.id] })
+        this.setState({ nav: [...nav.slice(0, navIndex + 1), item.id] })
       } else {
-        this.setState({ nav: nav.slice(0, index + 1) })
+        this.setState({ nav: nav.slice(0, navIndex + 1) })
       }
     }
 
-    this.setState({ itemSelectedId: item.id, columnSelectedId: null })
+    this.setState({ itemSelectedIndex: itemIndex, itemSelectedId: item.id })
   }
 
   render() {
-    const { nav, autoFocusId, itemSelectedId, columnSelectedId } = this.state;
+    const { nav, autoFocusId, itemSelectedId, itemSelectedIndex } = this.state;
 
-    const { map, renderItem, renderPreviewItem, renderPreviewColumn } = this.props;
+    const { map, renderItem, renderPreview } = this.props;
+
+    const preview = (itemSelectedId) ? renderPreview(map[itemSelectedId], itemSelectedIndex) : null
 
     return (
       <div>
@@ -212,8 +214,7 @@ export default class App extends Component {
               </DragDropContext>
             </StyledContent>
             <StyledSider width={300}>
-              {(itemSelectedId && renderPreviewItem(map[itemSelectedId])) ||
-                (columnSelectedId && renderPreviewColumn(map[columnSelectedId]))}
+              {preview}
             </StyledSider>
           </Layout>
           <StyledFooter>
@@ -236,7 +237,7 @@ App.propTypes = {
   onChangeRow: PropTypes.func,
   onChangeColumn: PropTypes.func,
   renderItem: PropTypes.func.isRequired,
-  renderPreviewItem: PropTypes.func.isRequired,
+  renderPreview: PropTypes.func.isRequired,
 }
 
 App.defaultProps = {

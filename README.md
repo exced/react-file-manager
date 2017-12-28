@@ -5,6 +5,8 @@
 [![Npm](https://img.shields.io/npm/v/react-file-manager.svg?style=flat)](https://www.npmjs.com/package/react-file-manager)
 [![Npm](https://img.shields.io/coveralls/exced/react-file-manager/master.svg?style=flat)](https://coveralls.io/github/exced/react-file-manager)
 
+Multi-column File Manager based on react-beautiful-dnd.
+
 ## [Live Demo](https://exced.github.io/react-file-manager)
 
 ## Install
@@ -32,6 +34,6 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 | onChangeRow | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of row |
 | onChangeColumn | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of column |
 | renderItem | Object => React.Element | None  | true | Selected item rendering |
-| renderPreviewItem | Object => React.Element | None  | true | Selected item preview rendering |
+| renderPreview | Object => React.Element | None  | true | Selected item preview rendering |
 
 All contributions are welcome.

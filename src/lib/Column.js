@@ -40,18 +40,19 @@ export default class Column extends Component {
 
     return (
       <DropZone innerRef={dropProvided.innerRef}>
-        {data.map(item => (
+        {data.map((item, index) => (
           <Draggable key={item.id} draggableId={item.id} type={listType}>
             {(dragProvided, dragSnapshot) => (
               <div>
                 <Item
                   key={item.id}
+                  index={index}
                   item={item}
                   isDragging={dragSnapshot.isDragging}
                   provided={dragProvided}
                   autoFocus={this.props.autoFocusId === item.id}
                   selected={selectedId && selectedId === item.id}
-                  onClick={() => onClickItem(item)}
+                  onClick={() => onClickItem(item, index)}
                   renderItem={renderItem}
                 />
                 {dragProvided.placeholder}

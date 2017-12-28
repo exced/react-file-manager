@@ -37,7 +37,7 @@ export default class Item extends Component {
   }
 
   render() {
-    const { item, renderItem, isDragging, provided, selected, onClick } = this.props;
+    const { item, index, renderItem, isDragging, provided, selected, onClick } = this.props;
 
     return (
       <div onClick={onClick}>
@@ -48,7 +48,7 @@ export default class Item extends Component {
           selected={selected}
           {...provided.dragHandleProps}
         >
-          {renderItem(item)}
+          {renderItem(item, index)}
         </Container>
       </div>
     );
