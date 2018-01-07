@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import FileManager from './lib'
+import FileManager from '../../lib'
 import { Icon, Button } from 'antd'
 
 const ButtonGroup = Button.Group
@@ -194,11 +194,11 @@ const initial = {
 }
 
 const images = {
-  file: '/images/file.png',
-  folder: '/images/folder.png',
+  file: 'https://raw.githubusercontent.com/exced/react-file-manager/master/public/images/file.png',
+  folder: 'https://raw.githubusercontent.com/exced/react-file-manager/master/public/images/folder.png',
 }
 
-export default class App extends Component {
+export default class Default extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -206,7 +206,7 @@ export default class App extends Component {
     }
   }
 
-  renderItem = (item, index) => (
+  renderItem = (item) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ flex: 1 }}>
         <div style={{ float: 'left' }}>
@@ -264,10 +264,8 @@ export default class App extends Component {
     return (
       <FileManager
         map={map}
-        rootId={"0"}
+        rootId="0"
         onChange={map => this.setState({ map })}
-        onChangeRow={(target, source, destination) => console.log('onChangeRow')}
-        onChangeColumn={(target, source, destination) => console.log('onChangeColumn')}
         renderItem={this.renderItem}
         renderPreview={this.renderPreview}
       />

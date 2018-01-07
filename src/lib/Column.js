@@ -13,17 +13,25 @@ const Wrapper = styled.div`
   padding-bottom: 0;
   transition: background-color 0.1s ease, opacity 0.1s ease;
   user-select: none;
-  width: 250px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100%;
 `;
 
 const DropZone = styled.div`
-  min-height: 100%;
+  width: 250px;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-bottom: 8px;
 `;
 
 const ScrollContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
+  height: 100%;
   max-height: 100%;
 `;
 

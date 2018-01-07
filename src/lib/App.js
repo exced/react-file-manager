@@ -10,35 +10,30 @@ import Column from './Column';
 
 const { Footer, Content, Sider } = Layout;
 
-const Root = styled.div`
-  box-sizing: border-box;
-  min-height: 100%;
-  height: 100%;
-`;
+const LayoutContainer = styled(Layout)`
+  height: 100vh;
+  overflow-y: hidden;
+`
 
-const HorizontalScrollContainer = styled.div`
+const ContentContainer = styled.section`
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  min-height: 100%;
-  height: 100%;
-  padding: 8px;
-  max-width: 100%;
-  overflow: auto;
-`;
-
-const VerticalScrollContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  border-right: 1px solid #ccc;
-  max-height: 100%;
-  overflow: auto;
-`;
-
-const StyledContent = styled(Content) `
   background-color: white;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  box-sizing: border-box;
+`;
+
+const ColumnContainer = styled.div`
+  border-right: 1px solid #ccc;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 250px;
 `;
 
 const StyledSider = styled(Sider) `
@@ -189,44 +184,40 @@ export default class App extends Component {
     const preview = (itemSelectedId) ? renderPreview(map[itemSelectedId], itemSelectedIndex) : null
 
     return (
-      <div>
-        <Layout style={{ minHeight: '100vh' }}>
-          <Layout>
-            <StyledContent>
+      <LayoutContainer>
+        <Layout>
+          <Content>
+            <ContentContainer>
               <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
-                <Root>
-                  <HorizontalScrollContainer>
-                    {nav.map(id => map[id].children &&
-                      <VerticalScrollContainer key={`column-${id}`}>
-                        <Column
-                          listId={id}
-                          listType="card"
-                          data={assemble(map, map[id].children)}
-                          autoFocusId={autoFocusId}
-                          selectedId={itemSelectedId}
-                          onClickItem={this.onClickItem}
-                          renderItem={renderItem}
-                        />
-                      </VerticalScrollContainer>
-                    )}
-                  </HorizontalScrollContainer>
-                </Root>
+                {nav.map(id => map[id].children &&
+                  <ColumnContainer key={`column-${id}`}>
+                    <Column
+                      listId={id}
+                      listType="card"
+                      data={assemble(map, map[id].children)}
+                      autoFocusId={autoFocusId}
+                      selectedId={itemSelectedId}
+                      onClickItem={this.onClickItem}
+                      renderItem={renderItem}
+                    />
+                  </ColumnContainer>
+                )}
               </DragDropContext>
-            </StyledContent>
-            <StyledSider width={300}>
-              {preview}
-            </StyledSider>
-          </Layout>
-          <StyledFooter>
-            <Breadcrumb separator=">">
-              {nav.map(id =>
-                <Breadcrumb.Item key={`breadcrumb-${id}`}> <a onClick={() => this.onClickBreadcrumb(id)}>{map[id].title}</a></Breadcrumb.Item>
-              )}
-            </Breadcrumb>
-          </StyledFooter>
+            </ContentContainer>
+          </Content>
+          <StyledSider width={300}>
+            {preview}
+          </StyledSider>
         </Layout>
-      </div>
-    );
+        <StyledFooter>
+          <Breadcrumb separator=">">
+            {nav.map(id =>
+              <Breadcrumb.Item key={`breadcrumb-${id}`}> <a onClick={() => this.onClickBreadcrumb(id)}>{map[id].title}</a></Breadcrumb.Item>
+            )}
+          </Breadcrumb>
+        </StyledFooter>
+      </LayoutContainer>
+    )
   }
 }
 

@@ -5,7 +5,7 @@
 [![Npm](https://img.shields.io/npm/v/react-file-manager.svg?style=flat)](https://www.npmjs.com/package/react-file-manager)
 [![Npm](https://img.shields.io/coveralls/exced/react-file-manager/master.svg?style=flat)](https://coveralls.io/github/exced/react-file-manager)
 
-Multi-column File Manager based on react-beautiful-dnd.
+Multi-column File Manager based on [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd).
 
 ## [Live Demo](https://exced.github.io/react-file-manager)
 
