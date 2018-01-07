@@ -7,8 +7,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Item from './Item';
 
 const Wrapper = styled.div`
-  margin-top: 20px;
-  background-color: ${({ isDraggingOver }) => (isDraggingOver ? '#cccdce' : 'white')};
+  background-color: ${({ isDraggingOver, dropBackgroundColor }) => (isDraggingOver ? dropBackgroundColor : 'white')};
   opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : 'inherit')};
   padding: 8px;
   padding-bottom: 0;
@@ -44,6 +43,7 @@ export default class Column extends Component {
       data,
       selectedId,
       onClickItem,
+      itemSelectedColor,
       renderItem,
      } = this.props;
 
@@ -62,6 +62,7 @@ export default class Column extends Component {
                   autoFocus={this.props.autoFocusId === item.id}
                   selected={selectedId && selectedId === item.id}
                   onClick={() => onClickItem(item, index)}
+                  itemSelectedColor={itemSelectedColor}
                   renderItem={renderItem}
                 />
                 {dragProvided.placeholder}
@@ -81,6 +82,7 @@ export default class Column extends Component {
       isDropDisabled,
       listId,
       listType,
+      dropBackgroundColor,
       style,
     } = this.props;
 
@@ -96,6 +98,7 @@ export default class Column extends Component {
             style={style}
             isDraggingOver={dropSnapshot.isDraggingOver}
             isDropDisabled={isDropDisabled}
+            dropBackgroundColor={dropBackgroundColor}
           >
             {internalScroll ? (
               <ScrollContainer>
@@ -115,4 +118,6 @@ Column.propTypes = {
   selectedId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onClickItem: PropTypes.func.isRequired,
   renderItem: PropTypes.func.isRequired,
+  itemSelectedColor: PropTypes.string.isRequired,
+  dropBackgroundColor: PropTypes.string.isRequired,
 }

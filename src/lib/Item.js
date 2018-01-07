@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
 const Container = styled.div`
 border-radius: 3px;
 border: 1px solid grey;
-background-color: ${({ selected, isDragging }) => ((isDragging || selected) ? '#1a53ff' : 'white')};
+background-color: ${({ selected, isDragging, itemSelectedColor }) => ((isDragging || selected) ? itemSelectedColor : 'white')};
 /* cursor: grabbing is handled by app */
 cursor: grab;
 box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px grey` : 'none')};
@@ -37,7 +38,7 @@ export default class Item extends Component {
   }
 
   render() {
-    const { item, index, renderItem, isDragging, provided, selected, onClick } = this.props;
+    const { item, index, renderItem, isDragging, provided, selected, onClick, itemSelectedColor } = this.props;
 
     return (
       <div onClick={onClick}>
@@ -46,6 +47,7 @@ export default class Item extends Component {
           innerRef={provided.innerRef}
           style={provided.draggableStyle}
           selected={selected}
+          itemSelectedColor={itemSelectedColor}
           {...provided.dragHandleProps}
         >
           {renderItem(item, index)}
@@ -53,4 +55,8 @@ export default class Item extends Component {
       </div>
     );
   }
+}
+
+Item.propTypes = {
+  itemSelectedColor: PropTypes.string.isRequired,
 }

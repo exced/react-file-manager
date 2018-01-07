@@ -35,6 +35,8 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 | onChangeColumn | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of column |
 | renderItem | Object => React.Element | None  | true | Selected item rendering |
 | renderPreview | Object => React.Element | None  | true | Selected item preview rendering |
+| itemSelectedColor | String | '#1a53ff'  | false | Item Selected color |
+| dropBackgroundColor | String | '#cccdce'  | false | Drop column background color |
 
 ## TODO
 - [ ] Add tests

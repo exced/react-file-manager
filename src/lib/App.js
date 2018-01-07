@@ -183,7 +183,7 @@ export default class App extends Component {
   render() {
     const { nav, autoFocusId, itemSelectedId, itemSelectedIndex } = this.state;
 
-    const { map, renderItem, renderPreview } = this.props;
+    const { map, renderItem, renderPreview, itemSelectedColor, dropBackgroundColor } = this.props;
 
     const preview = (itemSelectedId) ? renderPreview(map[itemSelectedId], itemSelectedIndex) : null
 
@@ -202,6 +202,8 @@ export default class App extends Component {
                       autoFocusId={autoFocusId}
                       selectedId={itemSelectedId}
                       onClickItem={this.onClickItem}
+                      itemSelectedColor={itemSelectedColor}
+                      dropBackgroundColor={dropBackgroundColor}
                       renderItem={renderItem}
                     />
                   </ColumnContainer>
@@ -233,9 +235,13 @@ App.propTypes = {
   onChangeColumn: PropTypes.func,
   renderItem: PropTypes.func.isRequired,
   renderPreview: PropTypes.func.isRequired,
+  itemSelectedColor: PropTypes.string,
+  dropBackgroundColor: PropTypes.string,
 }
 
 App.defaultProps = {
   onChangeRow: (a, b, c) => { },
   onChangeColumn: (a, b, c) => { },
+  itemSelectedColor: '#1a53ff',
+  dropBackgroundColor: '#cccdce',
 }
