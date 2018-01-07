@@ -7,6 +7,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Item from './Item';
 
 const Wrapper = styled.div`
+  margin-top: 20px;
   background-color: ${({ isDraggingOver }) => (isDraggingOver ? '#cccdce' : 'white')};
   opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : 'inherit')};
   padding: 8px;

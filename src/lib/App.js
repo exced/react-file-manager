@@ -10,7 +10,7 @@ import Column from './Column';
 
 const { Footer, Content, Sider } = Layout;
 
-const LayoutContainer = styled(Layout)`
+const LayoutContainer = styled(Layout) `
   height: 100vh;
   overflow-y: hidden;
 `
@@ -130,11 +130,15 @@ export default class App extends Component {
   };
 
   onDragStart = (initial) => {
-    console.log('onDragStart');
+    const { itemSelectedId, nav } = this.state
+    const { map } = this.props
+    // cannot move folder to right if selected
+    if (itemSelectedId === initial.draggableId && map[itemSelectedId].children.length > 0) {
+      this.setState({ nav: nav.slice(0, - 1) })
+    }
   }
 
   onDragEnd = (result) => {
-    console.log('onDragEnd', result);
     // dropped nowhere  
     if (!result.destination) {
       return;

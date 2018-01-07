@@ -36,4 +36,7 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 | renderItem | Object => React.Element | None  | true | Selected item rendering |
 | renderPreview | Object => React.Element | None  | true | Selected item preview rendering |
 
+## TODO
+- [ ] Add tests
+
 All contributions are welcome.
