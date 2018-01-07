@@ -44,8 +44,8 @@ const initial = {
 }
 
 const images = {
-  file: '/images/file.png',
-  folder: '/images/folder.png',
+  file: 'https://raw.githubusercontent.com/exced/react-file-manager/master/public/images/file.png',
+  folder: 'https://raw.githubusercontent.com/exced/react-file-manager/master/public/images/folder.png',
 }
 
 export default class Default extends Component {
