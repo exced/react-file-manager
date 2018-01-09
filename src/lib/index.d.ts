@@ -5,12 +5,24 @@ import * as React from "react";
 
 declare module "react-file-manager" {
 
-    export interface FileManagerProps extends React.Props {
+  interface FileManagerProps extends React.Props {
+    map: {
+      id: string | number,
+      children: Array<string | number>,
+      parent: string | number
+    },
+    rootId: string | number,
+    onChange: (map: object) => void,
+    onChangeRow?: (target: object, source: object, destination: object) => void,
+    onChangeColumn?: (target: object, source: object, destination: object) => void,
+    renderItem: (item: object, index: number) => React.Component,
+    renderPreview: (item: object, index: number) => React.Component,
+    itemSelectedColor?: string,
+    dropBackgroundColor?: string,
+  }
 
-    }
+  export default class FileManager extends React.Component<FileManagerProps, {}> {
 
-    export default class FileManager extends React.Component<FileManagerProps, {}> {
-
-    }
+  }
 
 }
