@@ -28,7 +28,7 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 
 |    Name     |       Type       |       Default       | Required | Description |
 | :----------:| :-------------:  | :-----------------: | :----------:| :------------:|
-| initial | Object. See [Example](https://github.com/exced/react-file-manager/blob/master/src/App.js) | None | true | normalized data map |
+| map | Files object. See [Example](https://github.com/exced/react-file-manager/blob/master/src/App.js) Mandatory fields : "id", "children", "parent" | None | true | normalized data map (You can use easily setup a normalizr schema. |
 | rootId | Number | None | true | Id of root folder |
 | onChange | Object => void | None | true | Triggered when file structure changes |
 | onChangeRow | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of row |
