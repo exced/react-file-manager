@@ -22,7 +22,7 @@ declare module "react-file-manager" {
   }
 
   export default class FileManager extends React.Component<FileManagerProps, {}> {
-
+    deselect: () => void
   }
 
 }

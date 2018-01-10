@@ -66,6 +66,12 @@ export default class App extends Component {
     };
   }
 
+  deselect = () => {
+    const { nav, itemSelectedId } = this.state
+    const index = _indexOf(nav, itemSelectedId)
+    this.setState({ itemSelectedId: null, itemSelectedIndex: null, nav: this.state.nav.slice(0, index) })
+  }
+
   reorderMap = ({ map, source, destination }) => {
     const current = map[source.droppableId].children;
     const next = map[destination.droppableId].children;

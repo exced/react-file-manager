@@ -116,18 +116,28 @@ export default class App extends Component {
     onCancel: () => { },
   })
 
-  onRemoveFolder = (id) => {
-    const { map } = this.state
+  removeFolder = (map, id) => {
     const { [id]: folder, ...rest } = map
-    this.setState({
-      map: {
-        ...rest,
-        [folder.parent]: {
-          ...map[folder.parent],
-          children: map[folder.parent].children.filter(e => e !== id)
-        },
+    return folder.parent ? {
+      ...rest,
+      [folder.parent]: {
+        ...map[folder.parent],
+        children: map[folder.parent].children.filter(e => e !== id)
       }
-    })
+    } : rest
+  }
+
+  cascadeRemoveFolder = (map, id) => {
+    const { [id]: folder } = map
+    const c = folder.children.reduce((a, e) => a[e].type === types.folder ?
+      this.cascadeRemoveFolder(a, e) : this.removeFile(a, e), map)
+    return this.removeFolder(c, id)
+  }
+
+  onRemoveFolder = (id) => {
+    this.fileManager.deselect()
+    const map = this.cascadeRemoveFolder(this.state.map, id)
+    this.setState({ map })
   }
 
   onChangeFolder = (id, input) => {
@@ -174,18 +184,21 @@ export default class App extends Component {
     onCancel: () => { },
   })
 
-  onRemoveFile = (id) => {
-    const { map } = this.state
+  removeFile = (map, id) => {
     const { [id]: file, ...rest } = map
-    this.setState({
-      map: {
-        ...rest,
-        [file.parent]: {
-          ...map[file.parent],
-          children: map[file.parent].children.filter(e => e !== id)
-        },
+    return file.parent ? {
+      ...rest,
+      [file.parent]: {
+        ...map[file.parent],
+        children: map[file.parent].children.filter(e => e !== id)
       }
-    })
+    } : rest
+  }
+
+  onRemoveFile = (id) => {
+    this.fileManager.deselect()
+    const map = this.removeFile(this.state.map, id)
+    this.setState({ map })
   }
 
   onChangeFile = (id, input) => {
@@ -234,7 +247,7 @@ export default class App extends Component {
                 <Button onClick={() => this.onClickAddFile(item.id)} icon="file-add" />
               </Tooltip>
               <Tooltip title="Remove folder">
-                <Button onClick={() => this.onClickRemoveFolder(item.id)} type="danger" icon="delete" />
+                <Button onClick={() => this.onClickRemoveFolder(item)} type="danger" icon="delete" />
               </Tooltip>
             </ButtonGroup>
           </div>
@@ -254,7 +267,7 @@ export default class App extends Component {
         <div style={{ marginTop: 10 }}>
           <ButtonGroup>
             <Tooltip title="Remove file">
-              <Button onClick={() => this.onClickRemoveFile(item.id)} type="danger" icon="delete" />
+              <Button onClick={() => this.onClickRemoveFile(item)} type="danger" icon="delete" />
             </Tooltip>
           </ButtonGroup>
         </div>
@@ -270,6 +283,7 @@ export default class App extends Component {
         <CreateFolder visible={modal ? modal === modals.folder : false} onCancel={() => this.toggleModal(null)} onSubmit={this.onAddFolder} />
         <CreateFile visible={modal ? modal === modals.file : false} onCancel={() => this.toggleModal(null)} onSubmit={this.onAddFile} />
         <FileManager
+          ref={ref => this.fileManager = ref}
           map={map}
           rootId={"0"}
           onChange={map => this.setState({ map })}
