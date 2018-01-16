@@ -41,4 +41,8 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 ## TODO
 - [ ] Add tests
 
+## Ideas
+
+- Package and export extended sample into a single component
+
 All contributions are welcome.

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { Layout, Breadcrumb } from 'antd';
 import { DragDropContext } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import { last as _last, indexOf as _indexOf } from 'lodash';
 import Column from './Column';
 
 const { Footer, Content, Sider } = Layout;
@@ -68,7 +67,7 @@ export default class App extends Component {
 
   deselect = () => {
     const { nav, itemSelectedId } = this.state
-    const index = _indexOf(nav, itemSelectedId)
+    const index = nav.indexOf(itemSelectedId)
     this.setState({ itemSelectedId: null, itemSelectedIndex: null, nav: this.state.nav.slice(0, index) })
   }
 
@@ -160,30 +159,18 @@ export default class App extends Component {
 
   onClickBreadcrumb = (id) => {
     const { nav } = this.state
-    const index = _indexOf(nav, id)
+    const index = nav.indexOf(id)
     this.setState({ nav: nav.slice(0, index + 1), itemSelectedId: id })
   }
 
   onClickItem = (item, itemIndex) => {
     const { nav } = this.state
-    const last = _last(nav)
-    const navIndex = _indexOf(nav, item.parent)
-
-    // Click on last
-    if (item.parent === last) {
-      if (item.children.length > 0) {
-        this.setState({ nav: [...nav, item.id] })
-      }
-    } else {
-      // Click before last
-      if (item.children.length > 0) {
-        this.setState({ nav: [...nav.slice(0, navIndex + 1), item.id] })
-      } else {
-        this.setState({ nav: nav.slice(0, navIndex + 1) })
-      }
-    }
-
-    this.setState({ itemSelectedIndex: itemIndex, itemSelectedId: item.id })
+    const index = nav.indexOf(item.parent)
+    this.setState({
+      itemSelectedIndex: itemIndex,
+      itemSelectedId: item.id,
+      nav: [...nav.slice(0, index + 1), item.id]
+    })
   }
 
   render() {
