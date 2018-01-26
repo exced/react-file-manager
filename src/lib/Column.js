@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Item from './Item';
+import OutsideDropZone from 'react-dropzone';
 
 const Wrapper = styled.div`
   background-color: ${({ isDraggingOver, dropBackgroundColor }) => (isDraggingOver ? dropBackgroundColor : 'white')};
@@ -39,39 +40,47 @@ export default class Column extends Component {
 
   renderList = (dropProvided) => {
     const {
+      listId,
       listType,
       data,
       selectedId,
       onClickItem,
       itemSelectedColor,
       renderItem,
-     } = this.props;
+      onOutsideDrop,
+     } = this.props
 
     return (
-      <DropZone innerRef={dropProvided.innerRef}>
-        {data.map((item, index) => (
-          <Draggable key={item.id} draggableId={item.id} type={listType}>
-            {(dragProvided, dragSnapshot) => (
-              <div>
-                <Item
-                  key={item.id}
-                  index={index}
-                  item={item}
-                  isDragging={dragSnapshot.isDragging}
-                  provided={dragProvided}
-                  autoFocus={this.props.autoFocusId === item.id}
-                  selected={selectedId && selectedId === item.id}
-                  onClick={() => onClickItem(item, index)}
-                  itemSelectedColor={itemSelectedColor}
-                  renderItem={renderItem}
-                />
-                {dragProvided.placeholder}
-              </div>
-            )}
-          </Draggable>
-        ))}
-        {dropProvided.placeholder}
-      </DropZone>
+      <OutsideDropZone
+        disableClick
+        onDrop={files => onOutsideDrop(listId, files)}
+        style={{ width: '100%', height: '100%' }}
+      >
+        <DropZone innerRef={dropProvided.innerRef}>
+          {data.map((item, index) => (
+            <Draggable key={item.id} draggableId={item.id} type={listType}>
+              {(dragProvided, dragSnapshot) => (
+                <div>
+                  <Item
+                    key={item.id}
+                    index={index}
+                    item={item}
+                    isDragging={dragSnapshot.isDragging}
+                    provided={dragProvided}
+                    autoFocus={this.props.autoFocusId === item.id}
+                    selected={selectedId && selectedId === item.id}
+                    onClick={() => onClickItem(item, index)}
+                    itemSelectedColor={itemSelectedColor}
+                    renderItem={renderItem}
+                  />
+                  {dragProvided.placeholder}
+                </div>
+              )}
+            </Draggable>
+          ))}
+          {dropProvided.placeholder}
+        </DropZone>
+      </OutsideDropZone>
     );
   }
 
@@ -120,4 +129,5 @@ Column.propTypes = {
   renderItem: PropTypes.func.isRequired,
   itemSelectedColor: PropTypes.string.isRequired,
   dropBackgroundColor: PropTypes.string.isRequired,
+  onOutsideDrop: PropTypes.func.isRequired,
 }

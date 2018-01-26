@@ -7,6 +7,7 @@
   "dependencies": {
     "antd": "^3.0.1",
     "autoprefixer": "7.1.6",
+    "axios": "^0.17.1",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
@@ -44,6 +45,7 @@
     "react-beautiful-dnd": "^3.0.0",
     "react-dev-utils": "^4.2.1",
     "react-dom": "^16.1.1",
+    "react-dropzone": "^4.2.7",
     "style-loader": "0.19.0",
     "styled-components": "^2.2.4",
     "sw-precache-webpack-plugin": "0.11.4",

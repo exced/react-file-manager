@@ -12,7 +12,7 @@ const { Footer, Content, Sider } = Layout;
 const LayoutContainer = styled(Layout) `
   height: 100vh;
   overflow-y: hidden;
-`
+`;
 
 const ContentContainer = styled.section`
   display: flex;
@@ -66,9 +66,9 @@ export default class App extends Component {
   }
 
   deselect = () => {
-    const { nav, itemSelectedId } = this.state
-    const index = nav.indexOf(itemSelectedId)
-    this.setState({ itemSelectedId: null, itemSelectedIndex: null, nav: this.state.nav.slice(0, index) })
+    const { nav, itemSelectedId } = this.state;
+    const index = nav.indexOf(itemSelectedId);
+    this.setState({ itemSelectedId: null, itemSelectedIndex: null, nav: this.state.nav.slice(0, index) });
   }
 
   reorderMap = ({ map, source, destination }) => {
@@ -105,7 +105,7 @@ export default class App extends Component {
 
     // moving to different list
     // Propagates to handle specific cases
-    this.props.onChangeColumn(target, source, destination)
+    this.props.onChangeColumn(target, source, destination);
 
     // remove from original
     current.splice(source.index, 1);
@@ -139,7 +139,7 @@ export default class App extends Component {
     const { map } = this.props
     // cannot move folder to right if selected
     if (itemSelectedId === initial.draggableId && map[itemSelectedId].children.length > 0) {
-      this.setState({ nav: nav.slice(0, - 1) })
+      this.setState({ nav: nav.slice(0, - 1) });
     }
   }
 
@@ -151,34 +151,46 @@ export default class App extends Component {
 
     const { source, destination } = result;
 
-    const { map, autoFocusId } = this.reorderMap({ map: this.props.map, source, destination })
+    const { map, autoFocusId } = this.reorderMap({ map: this.props.map, source, destination });
 
     this.setState({ itemSelectedId: null, map, autoFocusId });
     this.props.onChange(map) // Propagates changes
   }
 
   onClickBreadcrumb = (id) => {
-    const { nav } = this.state
-    const index = nav.indexOf(id)
-    this.setState({ nav: nav.slice(0, index + 1), itemSelectedId: id })
+    const { nav } = this.state;
+    const index = nav.indexOf(id);
+    this.setState({ nav: nav.slice(0, index + 1), itemSelectedId: id });
   }
 
   onClickItem = (item, itemIndex) => {
-    const { nav } = this.state
-    const index = nav.indexOf(item.parent)
+    const { nav } = this.state;
+    const index = nav.indexOf(item.parent);
     this.setState({
       itemSelectedIndex: itemIndex,
       itemSelectedId: item.id,
       nav: [...nav.slice(0, index + 1), item.id]
-    })
+    });
   }
 
   render() {
-    const { nav, autoFocusId, itemSelectedId, itemSelectedIndex } = this.state;
+    const {
+      nav,
+      autoFocusId,
+      itemSelectedId
+      , itemSelectedIndex,
+       } = this.state;
 
-    const { map, renderItem, renderPreview, itemSelectedColor, dropBackgroundColor } = this.props;
+    const {
+      map,
+      renderItem,
+      renderPreview,
+      itemSelectedColor,
+      dropBackgroundColor,
+      onOutsideDrop,
+       } = this.props;
 
-    const preview = (itemSelectedId) ? renderPreview(map[itemSelectedId], itemSelectedIndex) : null
+    const preview = (itemSelectedId) ? renderPreview(map[itemSelectedId], itemSelectedIndex) : null;
 
     return (
       <LayoutContainer>
@@ -198,6 +210,7 @@ export default class App extends Component {
                       itemSelectedColor={itemSelectedColor}
                       dropBackgroundColor={dropBackgroundColor}
                       renderItem={renderItem}
+                      onOutsideDrop={onOutsideDrop}
                     />
                   </ColumnContainer>
                 )}
@@ -216,7 +229,7 @@ export default class App extends Component {
           </Breadcrumb>
         </StyledFooter>
       </LayoutContainer>
-    )
+    );
   }
 }
 
@@ -224,17 +237,11 @@ App.propTypes = {
   map: PropTypes.object.isRequired,
   rootId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
-  onChangeRow: PropTypes.func,
-  onChangeColumn: PropTypes.func,
+  onChangeRow: PropTypes.func.isRequired,
+  onChangeColumn: PropTypes.func.isRequired,
+  onOutsideDrop: PropTypes.func.isRequired,
   renderItem: PropTypes.func.isRequired,
   renderPreview: PropTypes.func.isRequired,
   itemSelectedColor: PropTypes.string,
   dropBackgroundColor: PropTypes.string,
-}
-
-App.defaultProps = {
-  onChangeRow: (a, b, c) => { },
-  onChangeColumn: (a, b, c) => { },
-  itemSelectedColor: '#1a53ff',
-  dropBackgroundColor: '#cccdce',
 }

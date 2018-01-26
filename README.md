@@ -40,9 +40,6 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 
 ## TODO
 - [ ] Add tests
-
-## Ideas
-
-- Package and export extended sample into a single component
+- [x] Extended version as default
 
 All contributions are welcome.
