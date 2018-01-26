@@ -33,8 +33,9 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 | onChange | Object => void | None | true | Triggered when file structure changes |
 | onChangeRow | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of row |
 | onChangeColumn | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of column |
-| renderItem | Object => React.Element | None  | true | Selected item rendering |
-| renderPreview | Object => React.Element | None  | true | Selected item preview rendering |
+| onOutsideDrop | (itemId, files) => void | (a,b) => {} | false | Triggered when files from outside are dropped into a column |
+| renderItem | Object => React.Element | React.Element  | false | Selected item rendering |
+| renderPreview | Object => React.Element | React.Element  | false | Selected item preview rendering |
 | itemSelectedColor | String | '#1a53ff'  | false | Item Selected color |
 | dropBackgroundColor | String | '#cccdce'  | false | Drop column background color |
 

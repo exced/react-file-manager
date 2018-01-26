@@ -238,9 +238,9 @@ Facade.propTypes = {
 }
 
 Facade.defaultProps = {
-  onChangeRow: () => { },
-  onChangeColumn: () => { },
-  onOutsideDrop: () => { },
+  onChangeRow: (id, src, dest) => { },
+  onChangeColumn: (id, src, dest) => { },
+  onOutsideDrop: (id, files) => { },
   itemSelectedColor: '#1a53ff',
   dropBackgroundColor: '#cccdce',
 }

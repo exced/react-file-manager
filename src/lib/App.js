@@ -149,12 +149,14 @@ export default class App extends Component {
       return;
     }
 
+    this.deselect();
+    
     const { source, destination } = result;
 
     const { map, autoFocusId } = this.reorderMap({ map: this.props.map, source, destination });
 
-    this.setState({ itemSelectedId: null, map, autoFocusId });
-    this.props.onChange(map) // Propagates changes
+    this.setState({ map, autoFocusId });
+    this.props.onChange(map); // Propagates changes
   }
 
   onClickBreadcrumb = (id) => {
