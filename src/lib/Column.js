@@ -48,6 +48,7 @@ export default class Column extends Component {
       itemSelectedColor,
       renderItem,
       onOutsideDrop,
+      dropzoneConfig,
      } = this.props
 
     return (
@@ -55,7 +56,7 @@ export default class Column extends Component {
         disableClick
         onDrop={files => onOutsideDrop(listId, files)}
         style={{ width: '100%', height: '100%' }}
-        name="files"
+        {...dropzoneConfig}
       >
         <DropZone innerRef={dropProvided.innerRef}>
           {data.map((item, index) => (
@@ -131,4 +132,5 @@ Column.propTypes = {
   itemSelectedColor: PropTypes.string.isRequired,
   dropBackgroundColor: PropTypes.string.isRequired,
   onOutsideDrop: PropTypes.func.isRequired,
+  dropzoneConfig: PropTypes.object.isRequired,
 }

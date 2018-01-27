@@ -34,6 +34,7 @@ See [Example App](https://github.com/exced/react-file-manager/blob/master/src/Ap
 | onChangeRow | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of row |
 | onChangeColumn | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of column |
 | onOutsideDrop | (itemId, files) => void | (a,b) => {} | false | Triggered when files from outside are dropped into a column |
+| dropzoneConfig| object | {} | false | [react-dropzone](https://react-dropzone.js.org) config |
 | renderItem | Object => React.Element | React.Element  | false | Selected item rendering |
 | renderPreview | Object => React.Element | React.Element  | false | Selected item preview rendering |
 | itemSelectedColor | String | '#1a53ff'  | false | Item Selected color |

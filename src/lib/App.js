@@ -190,6 +190,7 @@ export default class App extends Component {
       itemSelectedColor,
       dropBackgroundColor,
       onOutsideDrop,
+      dropzoneConfig,
        } = this.props;
 
     const preview = (itemSelectedId) ? renderPreview(map[itemSelectedId], itemSelectedIndex) : null;
@@ -213,6 +214,7 @@ export default class App extends Component {
                       dropBackgroundColor={dropBackgroundColor}
                       renderItem={renderItem}
                       onOutsideDrop={onOutsideDrop}
+                      dropzoneConfig={dropzoneConfig}
                     />
                   </ColumnContainer>
                 )}
@@ -242,6 +244,7 @@ App.propTypes = {
   onChangeRow: PropTypes.func.isRequired,
   onChangeColumn: PropTypes.func.isRequired,
   onOutsideDrop: PropTypes.func.isRequired,
+  dropzoneConfig: PropTypes.object.isRequired,
   renderItem: PropTypes.func.isRequired,
   renderPreview: PropTypes.func.isRequired,
   itemSelectedColor: PropTypes.string,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import FileManager, { Types } from './lib'
+import axios from 'axios'
 
 const initial = {
   '0': {
@@ -54,6 +55,22 @@ export default class App extends Component {
     }
   }
 
+  onOutsideDrop = (parentId, files) => {
+    if (files.length <= 3) {
+      let data = new FormData()
+      for (let i = 0; i < files.length; i++) {
+        data.append('files', files[i])
+      }
+      axios.post('http://localhost:8000/upload', data)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }
+
   render() {
     const { map } = this.state
     return (
@@ -61,6 +78,16 @@ export default class App extends Component {
         map={map}
         rootId='0'
         onChange={map => this.setState({ map })}
+        onOutsideDrop={this.onOutsideDrop}
+        dropzoneConfig={{
+          name: 'files',
+          inputProps: {
+            type: 'file',
+            enctype: 'multipart/form-data',
+            action: '/files',
+            method: 'post'
+          }
+        }}
       />
     )
   }

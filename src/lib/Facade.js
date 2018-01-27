@@ -220,6 +220,7 @@ export default class Facade extends Component {
         onChangeRow={this.props.onChangeRow}
         onChangeColumn={this.props.onChangeColumn}
         onOutsideDrop={this.props.onOutsideDrop}
+        dropzoneConfig={this.props.dropzoneConfig}
         renderItem={this.props.renderItem ? this.props.renderItem : this.renderItem}
         renderPreview={this.props.renderPreview ? this.props.renderPreview : this.renderPreview}
         itemSelectedColor={this.props.itemSelectedColor}
@@ -243,4 +244,5 @@ Facade.defaultProps = {
   onOutsideDrop: (id, files) => { },
   itemSelectedColor: '#1a53ff',
   dropBackgroundColor: '#cccdce',
+  dropzoneConfig: {}
 }
