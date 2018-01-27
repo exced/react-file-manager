@@ -55,6 +55,7 @@ export default class Column extends Component {
         disableClick
         onDrop={files => onOutsideDrop(listId, files)}
         style={{ width: '100%', height: '100%' }}
+        name="files"
       >
         <DropZone innerRef={dropProvided.innerRef}>
           {data.map((item, index) => (
