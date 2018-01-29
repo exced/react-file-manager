@@ -24,6 +24,8 @@ yarn lib
 
 See [Example App](https://github.com/exced/react-file-manager/blob/master/src/App.js)
 
+You can also check out a [Real world app](https://exced.github.io/graphql-starter) using this file mangager to upload files on server (NodeJS, Express, MongoDB, GraphQL...)
+
 ## API
 
 |    Name     |       Type       |       Default       | Required | Description |
