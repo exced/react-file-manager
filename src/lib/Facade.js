@@ -16,6 +16,10 @@ const images = {
 
 export default class Facade extends Component {
 
+  deselect = () => {
+    this.app.deselect()
+  }
+
   onAddFolder = (parentId) => {
     const { map, onChange } = this.props;
     const folder = {
@@ -214,6 +218,7 @@ export default class Facade extends Component {
 
     return (
       <App
+        ref={ref => this.app = ref}
         map={map}
         rootId={rootId}
         onChange={onChange}
