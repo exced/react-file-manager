@@ -153,10 +153,10 @@ export default class Facade extends Component {
             <div style={{ marginTop: 10 }}>
               <ButtonGroup>
                 <Tooltip title="New folder">
-                  <Button onClick={() => this.onClickAddFolder(item.id)} icon="folder-add" />
+                  <Button onClick={() => this.onAddFolder(item.id)} icon="folder-add" />
                 </Tooltip>
                 <Tooltip title="New file">
-                  <Button onClick={() => this.onClickAddFile(item.id)} icon="file-add" />
+                  <Button onClick={() => this.onAddFile(item.id)} icon="file-add" />
                 </Tooltip>
               </ButtonGroup>
             </div>
