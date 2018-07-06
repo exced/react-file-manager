@@ -16,6 +16,7 @@ yarn add react-file-manager
 ```
 
 ## Build
+
 ```bash
 yarn lib
 ```
@@ -28,22 +29,23 @@ You can also check out a [Real world app](https://github.com/exced/graphql-start
 
 ## API
 
-|    Name     |       Type       |       Default       | Required | Description |
-| :----------:| :-------------:  | :-----------------: | :----------:| :------------:|
-| map | Files object. See [Example](https://github.com/exced/react-file-manager/blob/master/src/App.js) Mandatory fields : "id", "children", "parent" | None | true | normalized data map (You can use easily setup a normalizr schema. |
-| rootId | Number | None | true | Id of root folder |
-| onChange | Object => void | None | true | Triggered when file structure changes |
-| onChangeRow | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of row |
-| onChangeColumn | (itemId, source, destination) => void | (a,b,c) => {} | false | Triggered when item change of column |
-| onOutsideDrop | (itemId, files) => void | (a,b) => {} | false | Triggered when files from outside are dropped into a column |
-| dropzoneConfig| object | {} | false | [react-dropzone](https://react-dropzone.js.org) config |
-| renderItem | Object => React.Element | React.Element  | false | Selected item rendering |
-| renderPreview | Object => React.Element | React.Element  | false | Selected item preview rendering |
-| itemSelectedColor | String | '#1a53ff'  | false | Item Selected color |
-| dropBackgroundColor | String | '#cccdce'  | false | Drop column background color |
+|        Name         |                                                                     Type                                                                      |    Default    | Required |                            Description                            |
+| :-----------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: | :-----------: | :------: | :---------------------------------------------------------------: |
+|         map         | Files object. See [Example](https://github.com/exced/react-file-manager/blob/master/src/App.js) Mandatory fields : "id", "children", "parent" |     None      |   true   | normalized data map (You can use easily setup a normalizr schema. |
+|       rootId        |                                                                    Number                                                                     |     None      |   true   |                         Id of root folder                         |
+|      onChange       |                                                                Object => void                                                                 |     None      |   true   |               Triggered when file structure changes               |
+|     onChangeRow     |                                                     (itemId, source, destination) => void                                                     | (a,b,c) => {} |  false   |                 Triggered when item change of row                 |
+|   onChangeColumn    |                                                     (itemId, source, destination) => void                                                     | (a,b,c) => {} |  false   |               Triggered when item change of column                |
+|    onOutsideDrop    |                                                            (itemId, files) => void                                                            |  (a,b) => {}  |  false   |    Triggered when files from outside are dropped into a column    |
+|   dropzoneConfig    |                                                                    object                                                                     |      {}       |  false   |      [react-dropzone](https://react-dropzone.js.org) config       |
+|     renderItem      |                                                            Object => React.Element                                                            | React.Element |  false   |                      Selected item rendering                      |
+|    renderPreview    |                                                            Object => React.Element                                                            | React.Element |  false   |                  Selected item preview rendering                  |
+|  itemSelectedColor  |                                                                    String                                                                     |   '#1a53ff'   |  false   |                        Item Selected color                        |
+| dropBackgroundColor |                                                                    String                                                                     |   '#cccdce'   |  false   |                   Drop column background color                    |
 
 ## TODO
-- [ ] Add tests
-- [x] Extended version as default
+
+-   [ ] Add tests
+-   [x] Extended version example
 
 All contributions are welcome.

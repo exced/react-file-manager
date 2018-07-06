@@ -1,2 +1,2 @@
-export { default } from './Facade'
-export { default as Types } from './Types'
+export { default } from './App';
+export { default as Types } from './Types';
